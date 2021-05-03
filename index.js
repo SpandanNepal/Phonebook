@@ -55,9 +55,7 @@ app.get('/info', (request, response) => {
 
 app.get('/api/persons/:id', (request, response) => {
     const id = request.params.id
-    //console.log(id, typeof id)
     const person = persons.find(person => person.id === parseInt(id))
-    //console.log(person)
 
     if (person){
         response.json(person)
@@ -68,11 +66,11 @@ app.get('/api/persons/:id', (request, response) => {
 })
 
 app.delete('/api/persons/:id', (request, response) => {
-    const id = parseInt(request.params.id)
-    //console.log(id)
-    persons = persons.filter(person => person.id !== id)
-  
-    response.status(204).end()
+    Person.findByIdAndRemove(request.params.id)
+    .then((result) => {
+        response.status(204).end()
+    })
+    .catch(error => next(error))
 })
 
 app.post('/api/persons', (request, response) => {
@@ -83,26 +81,15 @@ app.post('/api/persons', (request, response) => {
         })
     }
     else{
-        //const dubPerson = persons.filter(person => person.name === content.name)
-        
-        // if (dubPerson.length >= 1){
-        //     response.status(400).json({
-        //         'error' : 'Name must be unique'
-        //     })
-        // }
-        // else{
-            //const randId = Math.floor(Math.random() * 100)
-            //content.id = randId
-            const person = new Person({
-                name: body.name,
-                number: body.number
-            })
-            person.save().then(result => {
-                response.json(result)
-            })
-            // persons = persons.concat(content)
-            // response.json(persons)
-        //}
+        const person = new Person({
+            name: body.name,
+            number: body.number
+        })
+        person.save().then(result => {
+            response.json(result)
+        })
+        .then(savedandFormattedPerson => res.json(savedandFormattedPerson))
+        .catch(error => next(error))
     }
 })
 

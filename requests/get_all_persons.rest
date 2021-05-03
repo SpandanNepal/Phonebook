@@ -1,4 +1,5 @@
-POST http://localhost:3001/api/persons
+//POST http://localhost:3001/api/persons
+DELETE http://localhost:3001/api/persons/608e7836bbc7ed1ccb0313c3
 content-type: application/json
 
 {
