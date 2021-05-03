@@ -3,34 +3,9 @@ const express = require("express")
 const morgan = require("morgan")
 const app = express()
 const cors = require('cors')
+const bodyParser = require('body-parser')
+app.use(bodyParser.json())
 const Person = require('./models/person')
-
-// app.use(express.static('build'))
-// app.use(cors())
-// app.use(express.json())
-
-// let persons = [
-//     { 
-//     "name": "Arto Hellas", 
-//     "number": "040-123456",
-//     "id": 1
-//     },
-//     { 
-//     "name": "Ada Lovelace", 
-//     "number": "39-44-5323523",
-//     "id": 2
-//     },
-//     { 
-//     "name": "Dan Abramov", 
-//     "number": "12-43-234345",
-//     "id": 3
-//     },
-//     { 
-//     "name": "Mary Poppendieck", 
-//     "number": "39-23-6423122",
-//     "id": 4
-//     }
-// ]
 
 morgan.token('type', function (req, res) { 
     if (req.method === 'POST'){
@@ -78,8 +53,9 @@ app.delete('/api/persons/:id', (request, response) => {
     .catch(error => next(error))
 })
 
-app.post('/api/persons', (request, response) => {
+app.post('/api/persons', (request, response, next) => {
     const content = request.body
+    console.log(content)
     if (!content.name && !content.number){
         response.status(400).json({
             'error': 'content is missing'
@@ -87,13 +63,13 @@ app.post('/api/persons', (request, response) => {
     }
     else{
         const person = new Person({
-            name: body.name,
-            number: body.number
+            name: content.name,
+            number: content.number
         })
         person.save().then(result => {
             response.json(result)
         })
-        .then(savedandFormattedPerson => res.json(savedandFormattedPerson))
+        .then(savedandFormattedPerson => response.json(savedandFormattedPerson))
         .catch(error => next(error))
     }
 })
