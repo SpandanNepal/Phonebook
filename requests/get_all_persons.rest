@@ -1,8 +1,8 @@
 //POST http://localhost:3001/api/persons
-DELETE http://localhost:3001/api/persons/608e7836bbc7ed1ccb0313c3
+PUT http://localhost:3001/api/persons/645679aa8b9f201de269a1b9
 content-type: application/json
 
 {
-    "name": "sample",
-    "number": "9861508484"
+    "name": "spandan",
+    "number": "12345"
 }
