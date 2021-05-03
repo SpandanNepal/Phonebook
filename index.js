@@ -1,8 +1,8 @@
 require('dotenv').config()
-const express = require("express")
+const express = require('express')
 const morgan = require("morgan")
 const app = express()
-const cors = require('cors')
+//const cors = require('cors')
 const bodyParser = require('body-parser')
 app.use(bodyParser.json())
 const Person = require('./models/person')
@@ -21,7 +21,7 @@ app.get('/api/persons', (request, response) => {
 })
 
 app.get('/info', async (request, response) => {
-    persons = await Person.find({})
+    const persons = await Person.find({})
     console.log(persons)
     const total = persons.length
     const datetime = new Date()
